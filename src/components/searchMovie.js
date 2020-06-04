@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import useSpinner from './useSpinner';
+import useSpinner2 from './useSpinner2';
 import MovieCard from './movieCard';
 
 export default function SearchMovies(){
@@ -7,16 +8,17 @@ export default function SearchMovies(){
    const [query, setQuery] = useState('');
    const [movies, setMovies] = useState([]);
    const [spinner, showSpinner, hideSpinner] = useSpinner();
+   const [spinner2, showSpinner2, hideSpinner2] = useSpinner2();
    
     const searchForMovies = async (e) => {
         e.preventDefault();
 
         const input = document.getElementById('input');
+        const button = document.getElementsByClassName('button')[0];
         input.addEventListener('keyup', function(event) {
             if (event.keyCode === 13) {
                 event.preventDefault();
-                document.getElementsByClassName('button')[0].click();
-    
+                button.click();
             }
         });
 
@@ -51,13 +53,17 @@ export default function SearchMovies(){
         }
         //-------------------------------------------
         
-        
+        const buttonText = document.getElementsByClassName('button-text')[0];
         if (input.value < 1) {
             fetchFailed.innerHTML = 'Search field cannot be empty.';
             Object.assign(fetchFailed.style, style);
             hideSpinner();
+            hideSpinner2();
+            buttonText.innerHTML = 'Search';
         }else {
             showSpinner();
+            showSpinner2();
+            buttonText.innerHTML = 'Searching...';
             fetchFailed.innerHTML = '';
              Object.assign(fetchFailed.style, style2);
              pageNo.innerHTML = '';
@@ -69,6 +75,8 @@ export default function SearchMovies(){
                 //-------------------------------------
                
                 hideSpinner();
+                hideSpinner2();
+                buttonText.innerHTML = 'Search';
                 fetchFailed.innerHTML = '';
                 Object.assign(fetchFailed.style, style2);
                 pageNo.innerHTML = 'Page 1 of 1';
@@ -80,6 +88,8 @@ export default function SearchMovies(){
                 //---------------------------------------
                 setTimeout(() => {
                     hideSpinner();
+                    hideSpinner2();
+                    buttonText.innerHTML = 'Search';
                     fetchFailed.innerHTML = 'Failed to fetch API. Check connection and try again';
                     Object.assign(fetchFailed.style, style);
                 }, 1500);
@@ -99,7 +109,7 @@ export default function SearchMovies(){
                 <label className='label' htmlFor='query'>Movie Name</label>
                 <input id='input' className='input' type='test' name='query'
                 placeholder='e.g Thor Ragnarok' autoComplete='off' value={query} onChange={(e) => setQuery(e.target.value)}/>
-                <button className='button' type='submit'>Search</button>
+                <button className='button' type='submit'><span className='button-text'>Search</span>{spinner2}</button>
             </form>
             {spinner}
 
