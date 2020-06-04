@@ -20,8 +20,6 @@ export default function SearchMovies(){
             }
         });
 
-        //console.log('submitting');
-        //const query = 'Jurassic Park';
         const url=`https://api.themoviedb.org/3/search/movie?api_key=0e840459214eccb29ba732044e6e4e23&language=en-US&query=${query}&page=1&include_adult=false`;
         
         //-----------------------------------------------------------
@@ -53,6 +51,7 @@ export default function SearchMovies(){
         }
         //-------------------------------------------
         
+        
         if (input.value < 1) {
             fetchFailed.innerHTML = 'Search field cannot be empty.';
             Object.assign(fetchFailed.style, style);
@@ -61,17 +60,20 @@ export default function SearchMovies(){
             showSpinner();
             fetchFailed.innerHTML = '';
              Object.assign(fetchFailed.style, style2);
+             pageNo.innerHTML = '';
+             Object.assign(pageNo.style, style2);
             try {
                 const res = await fetch(url);
                 const data = await res.json();
                 setMovies(data.results);
                 //-------------------------------------
+               
                 hideSpinner();
                 fetchFailed.innerHTML = '';
                 Object.assign(fetchFailed.style, style2);
                 pageNo.innerHTML = 'Page 1 of 1';
                 Object.assign(pageNo.style, style3);
-                //--------------------------------------
+
             }catch(err) {
                 console.error(err);
                 
@@ -98,17 +100,17 @@ export default function SearchMovies(){
                 <input id='input' className='input' type='test' name='query'
                 placeholder='e.g Thor Ragnarok' autoComplete='off' value={query} onChange={(e) => setQuery(e.target.value)}/>
                 <button className='button' type='submit'>Search</button>
-                {spinner}
-                {/*<Spinner/>
-                <ButtonLoader />
-                */}
             </form>
+            {spinner}
+
             <div id='fetchFailed'></div>
+
             <div className='card-list'>
                 {movies.filter(movie => movie.poster_path).map(movie => (
                    <MovieCard movie={movie} key={movie.id}/>
                 ))}
             </div>
+
             <div id='pageNo'></div>
         </>
     );
