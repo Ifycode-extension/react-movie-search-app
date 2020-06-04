@@ -3,4 +3,4 @@ React movie search app from the scrimba [Scrimba](https://scrimba.com/course/gre
 
 View my react movie search app on [Github-pages](https://ifycode.github.io/React-Movie-Search-App/).
 
-![About Page Mockup](./src/readmeExtension/react-movie-search-app.png)
+![React movie search app image](./src/readmeExtension/react-movie-search-app.PNG)
